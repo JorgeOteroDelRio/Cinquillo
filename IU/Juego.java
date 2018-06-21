@@ -23,7 +23,8 @@ public class Juego {
         }
 
         for (Jugador j : jugadores) {
-            j.getCartas();
+            j.robarCartas();
+            j.getMano().mostrarCartas();
         }
     }
 

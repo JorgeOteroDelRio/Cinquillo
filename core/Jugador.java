@@ -10,22 +10,21 @@ import java.util.ArrayList;
 public class Jugador {
 
     private final String nombre;
-    private ArrayList<Carta> cartas_mano;
     private int puntosAcumulados;
+    private Mano mano;
 
     public Jugador(String n) {
         this.nombre = n;
-        cartas_mano = new ArrayList();
+        mano = new Mano();
         puntosAcumulados = 0;
     }
 
-    public void getCartas() {
+    public void robarCartas() {
         byte cartasRobadas = 0;
         for (int i = 0; i < Baraja.TAMANHO; i++) {
             Carta c = Baraja.quitarCarta();
             if (c != null) {
-                cartas_mano.add(c);
-                Baraja.cartas[i] = null;
+                mano.anhadirCarta(c);
                 cartasRobadas++;
                 if (cartasRobadas == 12) {
                     break;
@@ -34,12 +33,18 @@ public class Jugador {
         }
 
         System.out.println(nombre + " ha robado sus cartas.");
-        System.out.println(this.toString());
+
     }
+
+    public Mano getMano() {
+        return mano;
+    }
+    
+    
 
     @Override
     public String toString() {
-        return "Jugador{" + "nombre=" + nombre + ", cartas_mano=" + cartas_mano + ", puntosAcumulados=" + puntosAcumulados + '}';
+        return "Jugador{" + "nombre=" + nombre + ", puntosAcumulados=" + puntosAcumulados + '}';
     }
 
     /**
@@ -48,6 +53,31 @@ public class Jugador {
      * una carta, quitar una carta, devolver cartas posibles, visualizar, etc
      */
     public class Mano {
+
+        private Carta[] cartas_mano;
+
+        public Mano() {
+            cartas_mano = new Carta[12];
+        }
+
+        public void mostrarCartas() {
+            for (Carta c : cartas_mano) {
+                if (c != null) {
+                    System.out.println(c.toString());
+                } else {
+                    break;
+                }
+            }
+        }
+
+        private void anhadirCarta(Carta cartaNueva) {
+            for (int i = 0; i < cartas_mano.length; i++) {
+                if (cartas_mano[i] == null) {
+                    cartas_mano[i] = cartaNueva;
+                    break;
+                }
+            }
+        }
 
     }
 

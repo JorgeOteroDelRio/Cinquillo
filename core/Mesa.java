@@ -1,6 +1,8 @@
 
 package core;
 
+import java.util.ArrayDeque;
+
 /**
 * Representa la mesa de juego, donde los jugadores colocan las cartas en cada turno.
 * Estructura: Se utilizará un array estático de dobles colas (Deque), una para cada palo
@@ -8,6 +10,12 @@ package core;
 */
 
 public class Mesa {
-	
+    
+	private static int turno = 0;
+        private static ArrayDeque mesa = new ArrayDeque();
+        
+        public void insertarCarta(Carta c){
+            
+        }
 }
 

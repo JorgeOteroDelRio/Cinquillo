@@ -16,7 +16,7 @@ public class Carta {
 
     @Override
     public String toString() {
-        return "C {" + NUMERO + " | " + PALO + '}';
+        return  "[" + NUMERO + " / " + PALO + "]";
     }
 
 }
