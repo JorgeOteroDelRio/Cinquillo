@@ -14,6 +14,14 @@ public class Carta {
         this.PALO = palo;
     }
 
+    public byte getNUMERO() {
+        return NUMERO;
+    }
+
+    public Baraja.Palos getPALO() {
+        return PALO;
+    }
+    
     @Override
     public String toString() {
         return  "[" + NUMERO + " / " + PALO + "]";

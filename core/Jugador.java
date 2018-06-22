@@ -1,6 +1,11 @@
 package core;
 
+import IU.ES;
+import core.Baraja.Palos;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Iterator;
 
 /**
  * Representa a un jugador de la partida, identificado por el nombre, las cartas
@@ -33,14 +38,34 @@ public class Jugador {
         }
 
         System.out.println(nombre + " ha robado sus cartas.");
+    }
 
+    public boolean colocarCarta() {
+        boolean carta_jugada = false;
+        boolean cartaFormato;
+        String[] partes;
+        Carta c = null;
+        do {
+            cartaFormato = true;
+            String res = ES.leeString("Introduzca el numero y palo de la carta que quiere jugar con el formato: (X-PALO).");
+            partes = res.split("-");
+            try {
+                c = new Carta(Byte.parseByte(partes[0]), Baraja.Palos.valueOf(partes[1]));
+            }catch(Exception e){
+                cartaFormato = false;
+            }
+        } while (partes.length != 2 || !cartaFormato);
+        System.out.println("La carta que ha escogido es: " + c.toString());
+        ArrayDeque<Carta> espadas_mesa = Mesa.getEspadas();
+        if (espadas_mesa.contains(c)) {
+            System.out.println("La carta escogida ya se ha jugado");
+        }
+        return carta_jugada;
     }
 
     public Mano getMano() {
         return mano;
     }
-    
-    
 
     @Override
     public String toString() {
@@ -77,6 +102,56 @@ public class Jugador {
                     break;
                 }
             }
+        }
+
+        public ArrayList<Carta> devolverCartasPosibles() {
+            ArrayList<Carta> cartasPosibles = new ArrayList(0);
+            ArrayDeque bastos = Mesa.getBastos();
+            ArrayDeque oros = Mesa.getOros();
+            ArrayDeque copas = Mesa.getCopas();
+            ArrayDeque espadas = Mesa.getEspadas();
+            Carta c_alta = null, c_baja = null;
+            for (Carta c : cartas_mano) {
+                if (c.getNUMERO() == 5) {
+                    cartasPosibles.add(c);
+                } else {
+                    for (Palos p : Baraja.Palos.values()) {
+                        switch (p) {
+                            case BASTOS:
+                                c_alta = (Carta) bastos.pollLast();
+                                c_baja = (Carta) bastos.pollFirst();
+                                break;
+                            case OROS:
+                                c_alta = (Carta) bastos.pollLast();
+                                c_baja = (Carta) bastos.pollFirst();
+                                break;
+                            case COPAS:
+                                c_alta = (Carta) bastos.pollLast();
+                                c_baja = (Carta) bastos.pollFirst();
+                                break;
+                            case ESPADAS:
+                                c_alta = (Carta) bastos.pollLast();
+                                c_baja = (Carta) bastos.pollFirst();
+                                break;
+                            default:
+                                break;
+                        }
+                        if (c_alta != null && c_baja != null) {
+                            if ((c.getNUMERO() - c_alta.getNUMERO()) == 1) {
+                                cartasPosibles.add(c);
+                                break;
+                            }
+
+                            if (c_baja.getNUMERO() - c.getNUMERO() == 1) {
+                                cartasPosibles.add(c);
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+            return cartasPosibles;
         }
 
     }
